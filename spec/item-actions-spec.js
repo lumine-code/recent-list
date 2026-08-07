@@ -17,13 +17,15 @@ describe("recent-list item actions", () => {
     const actions = list.selectList.itemActions();
     const byCommand = new Map(actions.map((action) => [action.command, action]));
 
-    const swap = byCommand.get("recent-list:swap");
-    expect(swap.name).toBe("Swap");
-    expect(swap.description).toBe("Open the project in a new window and close the current one");
-    expect(swap.keystrokes).toEqual(["alt-enter"]);
+    const here = byCommand.get("recent-list:open-in-this-window");
+    expect(here.name).toBe("Open In This Window");
+    expect(here.description).toBe(
+      "Open the project here, restoring the editors it was last left with",
+    );
+    expect(here.keystrokes).toEqual(["alt-enter"]);
 
-    expect(byCommand.get("recent-list:append").keystrokes).toEqual(["shift-enter"]);
-    expect(byCommand.get("recent-list:delete").keystrokes).toEqual(["alt-delete"]);
+    expect(byCommand.get("recent-list:add-to-project").keystrokes).toEqual(["shift-enter"]);
+    expect(byCommand.get("recent-list:remove-from-history").keystrokes).toEqual(["alt-delete"]);
 
     // Every action explains itself with more than a restated title.
     for (const action of actions) {
@@ -49,13 +51,26 @@ describe("recent-list item actions", () => {
 
     const spy = spyOn(list, "performAction");
     const index = list.selectList.itemActionsList.items.findIndex(
-      (item) => item.command === "recent-list:append",
+      (item) => item.command === "recent-list:add-to-project",
     );
     list.selectList.itemActionsList.selectIndex(index);
     list.selectList.itemActionsList.confirmSelection();
 
-    expect(spy).toHaveBeenCalledWith("append");
+    expect(spy).toHaveBeenCalledWith("add-to-project");
     expect(list.selectList.isVisible()).toBeTruthy();
     expect(list.selectList.itemActionsList.isVisible()).toBeFalsy();
+  });
+
+  it("hands the paths to the project when opening in this window", () => {
+    spyOn(atom.project, "setState");
+    spyOn(atom, "open");
+    spyOn(atom, "close");
+    spyOn(list.selectList, "getSelectedItem").and.returnValue({ paths: [__dirname] });
+
+    list.performAction("open-in-this-window");
+
+    expect(atom.project.setState).toHaveBeenCalledWith([__dirname]);
+    expect(atom.open).not.toHaveBeenCalled();
+    expect(atom.close).not.toHaveBeenCalled();
   });
 });
