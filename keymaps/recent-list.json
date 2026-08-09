@@ -1,10 +1,10 @@
 {
   // `alt-r` reveals the list. Bare alt-<letter> is the tier for revealing a
   // surface, one letter per surface, keyed to the package's own initial.
-  "atom-workspace": {
+  "lumine-workspace": {
     "alt-r": "recent-list:toggle"
   },
-  ".recent-list atom-text-editor[mini]": {
+  ".recent-list lumine-text-editor[mini]": {
     "alt-enter": "recent-list:open-in-this-window",
     "shift-enter": "recent-list:add-to-project",
     "alt-v": "recent-list:insert-paths",

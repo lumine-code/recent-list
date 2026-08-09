@@ -19,7 +19,7 @@ describe("recent-list", () => {
   // passes them to highlight explicitly rather than letting it use the built-in
   // matcher's. Render through a real list to prove that path end to end.
   function renderRow(item) {
-    list = atom.workspace.buildSelectList({
+    list = lumine.workspace.buildSelectList({
       items: [item],
       filterKeyForItem: (i) => i.paths[0],
       elementForItem: (i, options) => view.elementForItem(i, options),
@@ -71,11 +71,11 @@ describe("recent-list", () => {
   });
 
   describe("filter", () => {
-    it("matches accent-insensitively through atom.tools", () => {
+    it("matches accent-insensitively through lumine.tools", () => {
       // The package folds both sides itself; this is the call the port moved
-      // from the select-list export onto atom.tools.
-      expect(atom.tools.removeDiacritics("Łódź")).toBe("Lodz");
-      expect(atom.tools.removeDiacritics("café")).toBe("cafe");
+      // from the select-list export onto lumine.tools.
+      expect(lumine.tools.removeDiacritics("Łódź")).toBe("Lodz");
+      expect(lumine.tools.removeDiacritics("café")).toBe("cafe");
     });
   });
 });

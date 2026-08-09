@@ -2,15 +2,15 @@ describe("recent-list item actions", () => {
   let main, list;
 
   beforeEach(async () => {
-    jasmine.attachToDOM(atom.views.getView(atom.workspace));
+    jasmine.attachToDOM(lumine.views.getView(lumine.workspace));
     // No activation commands here, so a plain activation resolves; it also
     // loads the package keymap the actions list reads.
-    main = (await atom.packages.activatePackage("recent-list")).mainModule;
+    main = (await lumine.packages.activatePackage("recent-list")).mainModule;
     list = main.recentList;
   });
 
   afterEach(async () => {
-    await atom.packages.deactivatePackage("recent-list");
+    await lumine.packages.deactivatePackage("recent-list");
   });
 
   it("derives its actions from the command registrations and the keymap", () => {
@@ -44,7 +44,7 @@ describe("recent-list item actions", () => {
     await list.selectList.showItemActions();
 
     expect(list.selectList.itemActionsList.isVisible()).toBeTruthy();
-    expect(atom.workspace.getModalTrail()).toEqual(["Recent", "Actions"]);
+    expect(lumine.workspace.getModalTrail()).toEqual(["Recent", "Actions"]);
     // The actions list wears the package class, so the package keymap
     // resolves action keystrokes inside it too.
     expect(list.selectList.itemActionsList.element.classList.contains("recent-list")).toBe(true);
@@ -62,15 +62,15 @@ describe("recent-list item actions", () => {
   });
 
   it("hands the paths to the project when opening in this window", () => {
-    spyOn(atom.project, "setState");
-    spyOn(atom.app, "openWindow");
-    spyOn(atom.window, "close");
+    spyOn(lumine.project, "setState");
+    spyOn(lumine.app, "openWindow");
+    spyOn(lumine.window, "close");
     spyOn(list.selectList, "getSelectedItem").and.returnValue({ paths: [__dirname] });
 
     list.performAction("open-in-this-window");
 
-    expect(atom.project.setState).toHaveBeenCalledWith([__dirname]);
-    expect(atom.app.openWindow).not.toHaveBeenCalled();
-    expect(atom.window.close).not.toHaveBeenCalled();
+    expect(lumine.project.setState).toHaveBeenCalledWith([__dirname]);
+    expect(lumine.app.openWindow).not.toHaveBeenCalled();
+    expect(lumine.window.close).not.toHaveBeenCalled();
   });
 });

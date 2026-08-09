@@ -16,7 +16,7 @@ To install `recent-list` search for _recent-list_ in the Install pane of the Lum
 
 ## Commands
 
-Commands available in `atom-workspace`:
+Commands available in `lumine-workspace`:
 
 - `recent-list:toggle`: open the recent list.
 
