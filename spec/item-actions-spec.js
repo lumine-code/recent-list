@@ -63,14 +63,14 @@ describe("recent-list item actions", () => {
 
   it("hands the paths to the project when opening in this window", () => {
     spyOn(atom.project, "setState");
-    spyOn(atom, "open");
+    spyOn(atom.app, "openWindow");
     spyOn(atom.window, "close");
     spyOn(list.selectList, "getSelectedItem").and.returnValue({ paths: [__dirname] });
 
     list.performAction("open-in-this-window");
 
     expect(atom.project.setState).toHaveBeenCalledWith([__dirname]);
-    expect(atom.open).not.toHaveBeenCalled();
+    expect(atom.app.openWindow).not.toHaveBeenCalled();
     expect(atom.window.close).not.toHaveBeenCalled();
   });
 });
