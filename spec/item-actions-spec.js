@@ -63,14 +63,14 @@ describe("recent-list item actions", () => {
 
   it("hands the paths to the project when opening in this window", () => {
     spyOn(lumine.project, "setState");
-    spyOn(lumine.app, "openWindow");
+    spyOn(lumine.application, "openWindow");
     spyOn(lumine.window, "close");
     spyOn(list.selectList, "getSelectedItem").and.returnValue({ paths: [__dirname] });
 
     list.performAction("open-in-this-window");
 
     expect(lumine.project.setState).toHaveBeenCalledWith([__dirname]);
-    expect(lumine.app.openWindow).not.toHaveBeenCalled();
+    expect(lumine.application.openWindow).not.toHaveBeenCalled();
     expect(lumine.window.close).not.toHaveBeenCalled();
   });
 });
