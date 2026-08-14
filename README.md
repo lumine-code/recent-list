@@ -12,7 +12,7 @@ Quick access to recently opened projects.
 
 ## Installation
 
-To install `recent-list` search for _recent-list_ in the Install pane of the Lumine settings or run `lumine --install lumine-code/recent-list`.
+To install `recent-list` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/recent-list`.
 
 ## Commands
 
@@ -37,8 +37,8 @@ Opening in this window keeps the same renderer, so packages, themes and grammars
 
 ## Services
 
-- **[recent-list](docs/recent-list.md)** (`1.0.0`): provided to expose the recent projects list manager so other packages can open the list without depending on the toggle command.
-- **open-external** (`^1.0.0`): consumed to open folders externally and shows them in the explorer.
+- [`recent-list`](docs/recent-list.md): provided to expose the recent projects list manager so other packages can open the list without depending on the toggle command.
+- `open-external`: consumed to open folders externally and shows them in the explorer.
 
 ## Customization
 
