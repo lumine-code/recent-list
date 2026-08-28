@@ -14,10 +14,12 @@ describe("recent-list item actions", () => {
   });
 
   it("derives its actions from the command registrations and the keymap", () => {
-    spyOn(list.selectList, "getSelectedItem").and.returnValue({
+    const getSelectedItem = spyOn(list.selectList, "getSelectedItem").and.returnValue({
       paths: [__dirname],
     });
-    spyOn(lumine.history, "getProjects").and.returnValue([{ paths: [__dirname] }]);
+    const getProjects = spyOn(lumine.history, "getProjects").and.returnValue([
+      { paths: [__dirname] },
+    ]);
     list.selectList.show();
     const actions = list.selectList.itemActions();
     const byCommand = new Map(actions.map((action) => [action.command, action]));
@@ -46,15 +48,8 @@ describe("recent-list item actions", () => {
     expect(byCommand.has("core:confirm")).toBe(false);
     expect(byCommand.has("select-list:actions")).toBe(false);
     expect(byCommand.has("recent-list:toggle")).toBe(false);
-  });
 
-  it("keeps Clear Project History available without a match until history is empty", () => {
-    spyOn(list.selectList, "getSelectedItem").and.returnValue(null);
-    const getProjects = spyOn(lumine.history, "getProjects").and.returnValue([
-      { paths: [__dirname] },
-    ]);
-    list.selectList.show();
-
+    getSelectedItem.and.returnValue(null);
     expect(list.selectList.itemActions().map(({ command }) => command)).toEqual([
       "recent-list:refresh",
       "application:clear-project-history",
