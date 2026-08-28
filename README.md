@@ -20,7 +20,7 @@ Commands available in `lumine-workspace`:
 
 - `recent-list:toggle`: open the recent list.
 
-Commands available in `.recent-list`, all listed with their keybindings in the item-actions list (F12):
+Commands available in `.recent-list`:
 
 - `recent-list:open-in-new-window`: open a new window with the selected project,
 - `recent-list:open-in-this-window`: open the selected project here, restoring the editors it was last left with,
