@@ -14,6 +14,8 @@ describe("recent-list item actions", () => {
   });
 
   it("derives its actions from the command registrations and the keymap", () => {
+    spyOn(list.selectList, "getSelectedItem").and.returnValue({ paths: [__dirname] });
+    spyOn(lumine.history, "getProjects").and.returnValue([{ paths: [__dirname] }]);
     const actions = list.selectList.itemActions();
     const byCommand = new Map(actions.map((action) => [action.command, action]));
 
@@ -26,6 +28,11 @@ describe("recent-list item actions", () => {
 
     expect(byCommand.get("recent-list:add-to-project").keystrokes).toEqual(["shift-enter"]);
     expect(byCommand.get("recent-list:remove-from-history").keystrokes).toEqual(["alt-delete"]);
+    expect(byCommand.get("recent-list:open-in-new-window").keystrokes).toEqual(["enter"]);
+
+    const clear = byCommand.get("application:clear-project-history");
+    expect(clear.description).toBe("Forget the projects offered by the Reopen Project menu.");
+    expect(clear.scope).toBe("list");
 
     // Every action explains itself with more than a restated title.
     for (const action of actions) {
@@ -38,7 +45,34 @@ describe("recent-list item actions", () => {
     expect(byCommand.has("recent-list:toggle")).toBe(false);
   });
 
+  it("keeps Clear Project History available without a match until history is empty", () => {
+    spyOn(list.selectList, "getSelectedItem").and.returnValue(null);
+    const getProjects = spyOn(lumine.history, "getProjects").and.returnValue([
+      { paths: [__dirname] },
+    ]);
+
+    expect(list.selectList.itemActions().map(({ command }) => command)).toEqual([
+      "recent-list:refresh",
+      "application:clear-project-history",
+    ]);
+
+    getProjects.and.returnValue([]);
+    expect(list.selectList.itemActions().map(({ command }) => command)).toEqual([
+      "recent-list:refresh",
+    ]);
+  });
+
+  it("refreshes an open picker as soon as project history changes", () => {
+    spyOn(list.selectList, "isVisible").and.returnValue(true);
+    const spy = spyOn(list, "refresh");
+
+    lumine.history.didChangeProjects();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
   it("shows the actions as a flow step and runs one against the master list", async () => {
+    spyOn(list.selectList, "getSelectedItem").and.returnValue({ paths: [__dirname] });
     list.selectList.show();
 
     await list.selectList.showItemActions();
