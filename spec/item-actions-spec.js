@@ -14,8 +14,11 @@ describe("recent-list item actions", () => {
   });
 
   it("derives its actions from the command registrations and the keymap", () => {
-    spyOn(list.selectList, "getSelectedItem").and.returnValue({ paths: [__dirname] });
+    spyOn(list.selectList, "getSelectedItem").and.returnValue({
+      paths: [__dirname],
+    });
     spyOn(lumine.history, "getProjects").and.returnValue([{ paths: [__dirname] }]);
+    list.selectList.show();
     const actions = list.selectList.itemActions();
     const byCommand = new Map(actions.map((action) => [action.command, action]));
 
@@ -50,6 +53,7 @@ describe("recent-list item actions", () => {
     const getProjects = spyOn(lumine.history, "getProjects").and.returnValue([
       { paths: [__dirname] },
     ]);
+    list.selectList.show();
 
     expect(list.selectList.itemActions().map(({ command }) => command)).toEqual([
       "recent-list:refresh",
