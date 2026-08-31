@@ -1,8 +1,10 @@
 const path = require("path");
+const { Icon } = require("lumine");
 const main = require("../lib/main");
 
 describe("recent-list", () => {
   let view, list;
+  let iconRegistration;
 
   beforeEach(() => {
     main.activate();
@@ -12,6 +14,8 @@ describe("recent-list", () => {
   afterEach(() => {
     if (list) list.destroy();
     list = null;
+    iconRegistration?.dispose();
+    iconRegistration = null;
     main.deactivate();
   });
 
@@ -41,6 +45,29 @@ describe("recent-list", () => {
       // Only the lines after the first carry the continuation class.
       expect(lines[0].classList.contains("icon-line")).toBe(false);
       expect(lines[1].classList.contains("icon-line")).toBe(true);
+    });
+
+    it("routes project paths through the shared icon registry", () => {
+      const row = renderRow({
+        paths: ["one" + path.sep],
+        ibest: 0,
+        matchIndices: [],
+      });
+      const line = row.querySelector(".primary-line");
+      expect(line.classList.contains("icon-file-directory")).toBe(true);
+
+      iconRegistration = lumine.icons.addProvider(
+        {
+          id: "recent-list-spec",
+          handles: ["path"],
+          usesContext: true,
+          iconFor(target) {
+            return target.context === "recent-list" ? Icon.classes(["icon-flame"]) : null;
+          },
+        },
+        { priority: 100 },
+      );
+      expect(line.classList.contains("icon-flame")).toBe(true);
     });
 
     it("highlights only the best-matching line, using the package's own indices", () => {
