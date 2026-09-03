@@ -16,6 +16,7 @@ describe("recent-list item actions", () => {
   });
 
   it("describes its declared actions through the command registry and keymap", async () => {
+    list.selectListHost.getPanel();
     const item = {
       paths: [__dirname + path.sep],
       texts: [__dirname],
@@ -66,7 +67,7 @@ describe("recent-list item actions", () => {
   });
 
   it("refreshes an open picker as soon as project history changes", () => {
-    spyOn(list.selectList, "isVisible").and.returnValue(true);
+    spyOn(list.selectListHost, "isVisible").and.returnValue(true);
     const spy = spyOn(list.selectList, "reload");
 
     lumine.history.didChangeProjects();
@@ -76,10 +77,10 @@ describe("recent-list item actions", () => {
 
   it("shows the centralized actions picker and runs an action on the model", async () => {
     spyOn(lumine.history, "getProjects").and.returnValue([{ paths: [__dirname] }]);
-    await list.selectList.show();
+    await list.selectListHost.show();
     const item = list.selectList.getSelectedItem();
 
-    expect(await list.selectList.showActions()).toBe(true);
+    expect(await list.selectListHost.showActions()).toBe(true);
 
     expect(lumine.workspace.getModalTrail()).toEqual(["Recent", "Actions"]);
     expect(lumine.workspace.popModal()).toBe(true);
@@ -88,7 +89,7 @@ describe("recent-list item actions", () => {
     await list.selectList.runAction("recent-list:add-to-project");
 
     expect(spy).toHaveBeenCalledWith(item, "add-to-project");
-    expect(list.selectList.isVisible()).toBeFalse();
+    expect(list.selectListHost.isVisible()).toBeFalse();
   });
 
   it("hands the paths to the project when opening in this window", () => {
