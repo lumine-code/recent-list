@@ -25,13 +25,14 @@ describe("recent-list", () => {
   function renderRow(item) {
     list = lumine.workspace.buildSelectList({
       items: [item],
-      filterKeyForItem: (i) => i.paths[0],
-      elementForItem: (i, options) => view.elementForItem(i, options),
+      getItemId: (i) => JSON.stringify(i.paths),
+      search: { getFilterText: (i) => i.paths[0] },
+      renderItem: (i, options) => view.renderItem(i, options),
     });
-    return list.element.querySelector("li");
+    return list.getElement().querySelector("li");
   }
 
-  describe("elementForItem", () => {
+  describe("renderItem", () => {
     it("renders one line per project path", () => {
       const row = renderRow({
         paths: ["one" + path.sep, "two" + path.sep, "three" + path.sep],

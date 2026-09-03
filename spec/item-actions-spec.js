@@ -1,3 +1,5 @@
+const path = require("path");
+
 describe("recent-list item actions", () => {
   let main, list;
 
@@ -13,15 +15,17 @@ describe("recent-list item actions", () => {
     await lumine.packages.deactivatePackage("recent-list");
   });
 
-  it("derives its actions from the command registrations and the keymap", () => {
-    const getSelectedItem = spyOn(list.selectList, "getSelectedItem").and.returnValue({
-      paths: [__dirname],
-    });
+  it("describes its declared actions through the command registry and keymap", async () => {
+    const item = {
+      paths: [__dirname + path.sep],
+      texts: [__dirname],
+      originalPaths: [__dirname],
+    };
+    await list.selectList.setItems([item]);
     const getProjects = spyOn(lumine.history, "getProjects").and.returnValue([
       { paths: [__dirname] },
     ]);
-    list.selectList.show();
-    const actions = list.selectList.itemActions();
+    const actions = list.selectList.getAvailableActions();
     const byCommand = new Map(actions.map((action) => [action.command, action]));
 
     const here = byCommand.get("recent-list:open-in-this-window");
@@ -37,7 +41,7 @@ describe("recent-list item actions", () => {
 
     const clear = byCommand.get("application:clear-project-history");
     expect(clear.description).toBe("Forget the projects offered by the Reopen Project menu.");
-    expect(clear.scope).toBe("list");
+    expect(clear.context).toBe("dialog");
 
     // Every action explains itself with more than a restated title.
     for (const action of actions) {
@@ -49,58 +53,51 @@ describe("recent-list item actions", () => {
     expect(byCommand.has("select-list:actions")).toBe(false);
     expect(byCommand.has("recent-list:toggle")).toBe(false);
 
-    getSelectedItem.and.returnValue(null);
-    expect(list.selectList.itemActions().map(({ command }) => command)).toEqual([
+    await list.selectList.selectNone();
+    expect(list.selectList.getAvailableActions().map(({ command }) => command)).toEqual([
       "recent-list:refresh",
       "application:clear-project-history",
     ]);
 
     getProjects.and.returnValue([]);
-    expect(list.selectList.itemActions().map(({ command }) => command)).toEqual([
+    expect(list.selectList.getAvailableActions().map(({ command }) => command)).toEqual([
       "recent-list:refresh",
     ]);
   });
 
   it("refreshes an open picker as soon as project history changes", () => {
     spyOn(list.selectList, "isVisible").and.returnValue(true);
-    const spy = spyOn(list, "refresh");
+    const spy = spyOn(list.selectList, "reload");
 
     lumine.history.didChangeProjects();
 
     expect(spy).toHaveBeenCalled();
   });
 
-  it("shows the actions as a flow step and runs one against the master list", async () => {
-    spyOn(list.selectList, "getSelectedItem").and.returnValue({ paths: [__dirname] });
-    list.selectList.show();
+  it("shows the centralized actions picker and runs an action on the model", async () => {
+    spyOn(lumine.history, "getProjects").and.returnValue([{ paths: [__dirname] }]);
+    await list.selectList.show();
+    const item = list.selectList.getSelectedItem();
 
-    await list.selectList.showItemActions();
+    expect(await list.selectList.showActions()).toBe(true);
 
-    expect(list.selectList.itemActionsList.isVisible()).toBeTruthy();
     expect(lumine.workspace.getModalTrail()).toEqual(["Recent", "Actions"]);
-    // The actions list wears the package class, so the package keymap
-    // resolves action keystrokes inside it too.
-    expect(list.selectList.itemActionsList.element.classList.contains("recent-list")).toBe(true);
+    expect(lumine.workspace.popModal()).toBe(true);
 
-    const spy = spyOn(list, "performAction");
-    const index = list.selectList.itemActionsList.items.findIndex(
-      (item) => item.command === "recent-list:add-to-project",
-    );
-    list.selectList.itemActionsList.selectIndex(index);
-    list.selectList.itemActionsList.confirmSelection();
+    const spy = spyOn(list, "performAction").and.returnValue(true);
+    await list.selectList.runAction("recent-list:add-to-project");
 
-    expect(spy).toHaveBeenCalledWith("add-to-project");
-    expect(list.selectList.isVisible()).toBeTruthy();
-    expect(list.selectList.itemActionsList.isVisible()).toBeFalsy();
+    expect(spy).toHaveBeenCalledWith(item, "add-to-project");
+    expect(list.selectList.isVisible()).toBeFalse();
   });
 
   it("hands the paths to the project when opening in this window", () => {
     spyOn(lumine.project, "setState");
     spyOn(lumine.application, "openWindow");
     spyOn(lumine.window, "close");
-    spyOn(list.selectList, "getSelectedItem").and.returnValue({ paths: [__dirname] });
+    const item = { paths: [__dirname] };
 
-    list.performAction("open-in-this-window");
+    list.performAction(item, "open-in-this-window");
 
     expect(lumine.project.setState).toHaveBeenCalledWith([__dirname]);
     expect(lumine.application.openWindow).not.toHaveBeenCalled();
