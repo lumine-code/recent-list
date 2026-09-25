@@ -26,9 +26,6 @@
   "engines": {
     "lumine": "^1.0.0"
   },
-  "backgroundTips": [
-    "You can reopen a project you worked on earlier with {{ 'recent-list:toggle' | keystroke }}"
-  ],
   "scripts": {
     "test": "lumine --test spec",
     "lint": "eslint . --max-warnings 0",
@@ -40,6 +37,11 @@
       "description": "Provides access to the recent projects list manager",
       "versions": {
         "1.0.0": "provideRecentList"
+      }
+    },
+    "background-tips.provider": {
+      "versions": {
+        "1.0.0": "provideBackgroundTips"
       }
     }
   },
