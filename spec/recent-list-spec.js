@@ -32,6 +32,25 @@ describe("recent-list", () => {
     return list.getElement().querySelector("li");
   }
 
+  describe("activation", () => {
+    it("keeps the select-list DOM out of activation", () => {
+      expect(view.selectListHost).toBeNull();
+      expect(view.selectList).toBeNull();
+    });
+
+    it("defers the select list until its synchronous toggle command is used", async () => {
+      const workspaceElement = lumine.views.getView(lumine.workspace);
+      const host = { toggle: jasmine.createSpy("toggle") };
+      const ensureSelectList = spyOn(view, "ensureSelectList").and.returnValue(host);
+
+      await lumine.commands.dispatch(workspaceElement, "recent-list:toggle");
+
+      expect(ensureSelectList).toHaveBeenCalled();
+      expect(host.toggle).toHaveBeenCalled();
+      expect(view.selectListHost).toBeNull();
+    });
+  });
+
   describe("renderItem", () => {
     it("renders one line per project path", () => {
       const row = renderRow({

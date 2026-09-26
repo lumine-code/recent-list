@@ -9,6 +9,7 @@ describe("recent-list item actions", () => {
     // loads the package keymap the actions list reads.
     main = (await lumine.packages.activatePackage("recent-list")).mainModule;
     list = main.recentList;
+    list.ensureSelectList();
   });
 
   afterEach(async () => {
