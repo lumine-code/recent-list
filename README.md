@@ -7,8 +7,9 @@ Quick access to recently opened projects.
 - **Recent list**: browse and open recently opened projects.
 - **Multiple open modes**: open in a new window, open here restoring the project's own editors, or add to the current window.
 - **Dev and safe mode**: open projects in dev mode or safe mode directly from the list.
-- **Visual indicators**: items configured with dev mode or safe mode are marked with distinct icons.
 - **Recency-aware filtering**: fuzzy matching adjusts scores with a recency bonus and a shallower-path bonus.
+- **Unicode search**: match without accents while highlighting complete characters and emoji.
+- **History controls**: remove individual projects or clear the recent list.
 
 ## Installation
 
@@ -33,12 +34,7 @@ Commands available in `.recent-list`:
 - `recent-list:refresh`: update the recent list,
 - `recent-list:remove-from-history`: remove the selected project from the recent list.
 
-Opening in this window keeps the same renderer, so packages, themes and grammars stay loaded. The current project's editors are saved before the new project's are restored, unsaved changes included, so returning to a project finds it as you left it. Only the workspace center changes — a tree view, a terminal or any other dock keeps running.
-
-## Services
-
-- [`recent-list`](docs/recent-list.md): provided to expose the recent projects list manager so other packages can open the list without depending on the toggle command.
-- `open-external`: consumed to open folders externally and shows them in the explorer.
+Opening in this window keeps the same renderer, so packages, themes and grammars stay loaded. The current project's editors are saved before the new project's are restored, unsaved changes included, so returning to a project finds it as you left it. Only the workspace center changes — a tree view, a terminal or any other dock keeps running. Every folder in the history entry must remain available before switching; an incomplete entry can still be removed from history. Directory links and filesystem roots are supported. Opening in this window keeps its current dev or safe mode; the separate mode actions open a new window.
 
 ## Customization
 
@@ -52,6 +48,12 @@ Resize the results panel by adding CSS to your `styles.css`:
   }
 }
 ```
+
+## Services
+
+- [`recent-list`](docs/recent-list.md): provided to let other packages offer an action that opens the list.
+- `background-tips.provider`: provided to show a tip about reopening recent projects.
+- `open-external`: consumed to open folders externally and show them in the file manager.
 
 ## Contributing
 

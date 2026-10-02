@@ -7,7 +7,7 @@ Opens the recent-projects list, so a package can offer it as an action without d
 | Version     | `1.0.0`                                      |
 | Provided by | `provideRecentList()` returning `{ toggle }` |
 | Consumed by | `consumeRecentList(recentList)`              |
-| Owner       | `recent-list` (bundled)                      |
+| Owner       | `recent-list` (optional)                     |
 
 Deliberately narrow: it exposes the action, not the list. A consumer can put a "Reopen a project" button somewhere — the empty project view does exactly this — without reaching into how recent projects are stored.
 
@@ -42,9 +42,13 @@ const { Disposable } = require("lumine");
 
 module.exports = {
   consumeRecentList(recentList) {
+    const toggle = () => recentList.toggle();
     this.button.hidden = false;
-    this.button.addEventListener("click", () => recentList.toggle());
-    return new Disposable(() => (this.button.hidden = true));
+    this.button.addEventListener("click", toggle);
+    return new Disposable(() => {
+      this.button.removeEventListener("click", toggle);
+      this.button.hidden = true;
+    });
   },
 };
 ```
@@ -53,11 +57,11 @@ module.exports = {
 
 The point of consuming this rather than dispatching `recent-list:toggle` is that your consumer method is never called when the package is missing, so the button can be hidden by default and revealed only when the action exists. Dispatching a command for an absent package silently does nothing and leaves a dead control on screen.
 
-`toggle()` is synchronous and returns nothing.
+`toggle()` is synchronous and returns nothing. A facade belongs to the provider generation that supplied it; after that generation is deactivated, its facade does nothing.
 
 ## Teardown
 
-Return a `Disposable` that hides or removes whatever affordance you added. The service holds nothing on your behalf.
+Return a `Disposable` that removes the listeners and hides or removes whatever affordance you added. The service holds nothing on your behalf.
 
 ## Versioning
 
