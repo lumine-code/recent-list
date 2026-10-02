@@ -50,6 +50,18 @@ describe("recent-list", () => {
     });
   });
 
+  it("keeps a newer service edge when an older edge for the same provider is disposed", () => {
+    const service = jasmine.createSpyObj("OpenExternal", ["openExternal", "showInFolder"]);
+    const first = main.consumeOpenExternal(service);
+    const second = main.consumeOpenExternal(service);
+
+    first.dispose();
+
+    expect(view.openExternalService).toBe(service);
+    second.dispose();
+    expect(view.openExternalService).toBeNull();
+  });
+
   describe("renderItem", () => {
     it("renders one line per project path", () => {
       const row = renderRow({
