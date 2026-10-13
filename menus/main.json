@@ -1,6 +1,15 @@
 {
   "menu": [
     {
+      "label": "File",
+      "submenu": [
+        {
+          "label": "Open Recent Project…",
+          "command": "recent-list:toggle"
+        }
+      ]
+    },
+    {
       "label": "Packages",
       "submenu": [
         {
