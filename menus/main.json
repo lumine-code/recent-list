@@ -5,7 +5,9 @@
       "submenu": [
         {
           "label": "Open Recent Project…",
-          "command": "recent-list:toggle"
+          "command": "recent-list:toggle",
+          "group": "projects",
+          "order": 40
         }
       ]
     },
