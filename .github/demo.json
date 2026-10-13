@@ -2,9 +2,10 @@
   "title": "recent-list",
   "description": "Reopen a recently visited project.",
   "recordedOn": "2026-10-13",
-  "sourceRevision": "bf336a6ba025402dd9639aa462b86c4a5bdd06fa",
+  "sourceRevision": "aae41010d6b7732818023621a9ec2aa9c147d541",
   "mode": "normal",
   "fontSettings": "default",
+  "themeSourceRevision": "6564a9e21899b5541e9c8f8006f9be6d6d72e6ad",
   "images": [
     {
       "file": "demo.png",
