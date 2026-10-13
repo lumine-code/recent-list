@@ -36,6 +36,8 @@ Commands available in `.recent-list`:
 
 Opening in this window keeps the same renderer, so packages, themes and grammars stay loaded. The current project's editors are saved before the new project's are restored, unsaved changes included, so returning to a project finds it as you left it. Only the workspace center changes — a tree view, a terminal or any other dock keeps running. Every folder in the history entry must remain available before switching; an incomplete entry can still be removed from history. Directory links and filesystem roots are supported. Opening in this window keeps its current dev or safe mode; the separate mode actions open a new window.
 
+History removals and clearing operate on the latest stored list, so an unrelated concurrent update from another window cannot restore an entry you deleted.
+
 ## Customization
 
 Resize the results panel by adding CSS to your `styles.css`:
