@@ -1,0 +1,16 @@
+{
+  "title": "recent-list",
+  "description": "Reopen a recently visited project.",
+  "recordedOn": "2026-10-13",
+  "sourceRevision": "bf336a6ba025402dd9639aa462b86c4a5bdd06fa",
+  "mode": "normal",
+  "fontSettings": "default",
+  "images": [
+    {
+      "file": "demo.png",
+      "label": "Reopen a recently visited project.",
+      "width": 1200,
+      "height": 760
+    }
+  ]
+}

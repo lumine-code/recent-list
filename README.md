@@ -11,6 +11,8 @@ Quick access to recently opened projects.
 - **Unicode search**: match without accents while highlighting complete characters and emoji.
 - **History controls**: remove individual projects or clear the recent list.
 
+![Reopen a recently visited project.](.github/demo.png)
+
 ## Installation
 
 To install `recent-list` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/recent-list`.
