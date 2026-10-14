@@ -5,13 +5,13 @@
     "alt-r": "recent-list:toggle"
   },
   ".recent-list lumine-text-editor[mini]": {
-    "alt-enter": "recent-list:open-in-this-window",
-    "shift-enter": "recent-list:add-to-project",
+    "alt-enter": "recent-list:open-with",
+    "shift-enter": "recent-list:open-pending",
     "alt-v": "recent-list:insert-paths",
     "alt-d": "recent-list:open-in-dev-mode",
     "alt-s": "recent-list:open-in-safe-mode",
-    "alt-f12": "recent-list:open-external",
-    "ctrl-f12": "recent-list:show-in-folder",
+    "ctrl-alt-enter": "recent-list:open-external",
+    "ctrl-shift-enter": "recent-list:show-in-folder",
     "f5": "recent-list:refresh",
     "alt-delete": "recent-list:remove-from-history"
   }

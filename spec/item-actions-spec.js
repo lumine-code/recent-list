@@ -35,9 +35,10 @@ describe("recent-list item actions", () => {
     expect(here.description).toBe(
       "Open the project here, restoring the editors it was last left with.",
     );
-    expect(here.keystrokes).toEqual(["alt-enter"]);
+    expect(here.keystrokes).toEqual([]);
 
-    expect(byCommand.get("recent-list:add-to-project").keystrokes).toEqual(["shift-enter"]);
+    expect(byCommand.get("recent-list:add-to-project").keystrokes).toEqual([]);
+    expect(byCommand.get("recent-list:open-with").keystrokes).toEqual(["alt-enter"]);
     expect(byCommand.get("recent-list:remove-from-history").keystrokes).toEqual(["alt-delete"]);
     expect(byCommand.get("recent-list:open-in-new-window").keystrokes).toEqual(["enter"]);
 
@@ -182,8 +183,10 @@ describe("recent-list item actions", () => {
       expect(list.selectListHost.isVisible()).toBeTrue();
     });
 
-    it("dispatches alt-enter from the picker's mini editor", async () => {
+    it("dispatches alt-enter to Open With from the picker's mini editor", async () => {
       await showProject();
+      const choose = jasmine.createSpy("choose opener");
+      const command = lumine.commands.add("lumine-workspace", "open-with:toggle", choose);
       const event = new KeyboardEvent("keydown", {
         key: "Enter",
         code: "Enter",
@@ -197,8 +200,10 @@ describe("recent-list item actions", () => {
 
       lumine.keymaps.handleKeyboardEvent(event);
 
-      await conditionPromise(() => lumine.project.setState.calls.count() === 1);
-      expect(lumine.project.setState).toHaveBeenCalledWith([__dirname]);
+      await conditionPromise(() => choose.calls.count() === 1);
+      command.dispose();
+      expect(choose.calls.mostRecent().args[0].detail.project.paths).toEqual([__dirname]);
+      expect(lumine.project.setState).not.toHaveBeenCalled();
       expect(lumine.application.openWindow).not.toHaveBeenCalled();
     });
   });
