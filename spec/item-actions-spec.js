@@ -37,7 +37,7 @@ describe("recent-list item actions", () => {
     );
     expect(here.keystrokes).toEqual([]);
 
-    expect(byCommand.get("recent-list:add-to-project").keystrokes).toEqual([]);
+    expect(byCommand.get("recent-list:add-to-project").keystrokes).toEqual(["shift-enter"]);
     expect(byCommand.get("recent-list:open-with").keystrokes).toEqual(["alt-enter"]);
     expect(byCommand.get("recent-list:remove-from-history").keystrokes).toEqual(["alt-delete"]);
     expect(byCommand.get("recent-list:open-in-new-window").keystrokes).toEqual(["enter"]);
