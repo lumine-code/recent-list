@@ -2,8 +2,8 @@
   "title": "recent-list",
   "description": "Reopen a recently visited project.",
   "recordedOn": "2026-10-14",
-  "sourceRevision": "3b78f9276609e509e4fd35a19f0239fbb036dba6",
-  "themeSourceRevision": "14a69683b0e3238e2bc128fbfae3866c1e4ee9c6",
+  "sourceRevision": "788b5bc9fa93e57d34297df9b8a65e10679929e7",
+  "themeSourceRevision": "a673daf5882dc988419316d144a9bbe0aec9cb53",
   "mode": "normal",
   "fontSettings": "default",
   "scenario": "demo.js",
@@ -11,8 +11,8 @@
   "environment": {
     "platform": "win32",
     "arch": "x64",
-    "electron": "44.7.0",
-    "chrome": "152.0.7977.130",
+    "electron": "44.7.1",
+    "chrome": "152.0.7977.149",
     "devicePixelRatio": 1,
     "locale": "en-GB",
     "fontFamily": "Fira Code, Menlo, DejaVu Sans Mono, Consolas, monospace",
@@ -21,36 +21,37 @@
   },
   "viewport": { "width": 1200, "height": 760 },
   "cornerRadius": 10,
+  "privacy": { "version": 1, "location": "neutral", "textChecked": true },
   "sources": {
     "editor": {
-      "revision": "385bd1b3ac2db600f1c7e077474d9da4d6deebc4",
-      "dirty": true,
-      "workingTreeHash": "0fa935626a1db13861a0b78ef5c3d890e0a6bff80b25da2fac6e9889910defe0"
+      "revision": "b3fcd05714f72e3aa88498c47334a04de2c51afa",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "package": {
-      "revision": "3b78f9276609e509e4fd35a19f0239fbb036dba6",
-      "dirty": true,
-      "workingTreeHash": "cba092a5ca2c7820075d3a4a221a52bf8cf3693bc57273111df5567fd4f8ffbc"
+      "revision": "788b5bc9fa93e57d34297df9b8a65e10679929e7",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "recent-list": {
-      "revision": "3b78f9276609e509e4fd35a19f0239fbb036dba6",
-      "dirty": true,
-      "workingTreeHash": "cba092a5ca2c7820075d3a4a221a52bf8cf3693bc57273111df5567fd4f8ffbc"
+      "revision": "788b5bc9fa93e57d34297df9b8a65e10679929e7",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "language-javascript": {
-      "revision": "c6a745ba9ccb455cda2c4a477e2226c2b0c2e226",
-      "dirty": true,
-      "workingTreeHash": "e322b897ac398752e3fd858e4eb000a297e55b1c28f4b7f14a696184916e232c"
+      "revision": "7c60e9b041c23a0426c11a3e939883f8198cf528",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "one-theme": {
-      "revision": "14a69683b0e3238e2bc128fbfae3866c1e4ee9c6",
-      "dirty": true,
-      "workingTreeHash": "50ec2f83a6347dd8113870992ec4eb2be4014f3d9e12213c2f51b543f1eca793"
+      "revision": "a673daf5882dc988419316d144a9bbe0aec9cb53",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "tree-view": {
-      "revision": "b5ecef40d0e50def66bfea1f226ce2c93d98b8c2",
-      "dirty": true,
-      "workingTreeHash": "95c1c1a1c7032d3385fafe02711fe7f8f1111d84c1b3127879dfd362fd6a8ec8"
+      "revision": "aaa932b9f685f7514a5015d3b54079c45057475d",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     }
   },
   "fixtures": [
@@ -81,7 +82,7 @@
       "label": "Reopen a recently visited project.",
       "width": 1200,
       "height": 760,
-      "sha256": "24a6fe5d77d40f96af7ab7e649bd863c1df30d9936f6cf7f216fb18864630fae"
+      "sha256": "15c0a80337bc31fe532e0c7003fba08957421220c2cbada7927dafe86514750d"
     }
   ]
 }
