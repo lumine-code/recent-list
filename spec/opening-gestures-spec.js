@@ -98,7 +98,7 @@ describe("recent-list standard opening gestures", () => {
     return listener;
   }
 
-  it("Alt-clicks the clicked row into Open With without invoking the ordinary action", async () => {
+  it("keeps Alt-click choosing an opener and Ctrl-click opening the clicked project here", async () => {
     const choose = chooser();
     const result = await click(items[1], { altKey: true });
     expect(result.status).toBe("success");
@@ -111,6 +111,18 @@ describe("recent-list standard opening gestures", () => {
     expect(open).not.toHaveBeenCalled();
     expect(lumine.application.openWindow).not.toHaveBeenCalled();
     expect(external.openExternal).not.toHaveBeenCalled();
+
+    const switching = spyOn(lumine.project, "setState").and.resolveTo(true);
+    await model.selectItem(items[0]);
+    const current = await click(items[1], { ctrlKey: true });
+    expect(current.command).toBe("recent-list:open-in-this-window");
+    expect(current.status).toBe("success");
+    expect(switching).toHaveBeenCalledOnceWith([betaPath, extraPath]);
+    expect(choose).toHaveBeenCalledTimes(1);
+    expect(lumine.application.openWindow).not.toHaveBeenCalled();
+    expect(open).not.toHaveBeenCalled();
+    expect(external.openExternal).not.toHaveBeenCalled();
+    expect(external.showInFolder).not.toHaveBeenCalled();
   });
 
   it("opens the selected item chooser through Alt-Enter", async () => {
@@ -182,16 +194,37 @@ describe("recent-list standard opening gestures", () => {
     expect(external.openExternal).not.toHaveBeenCalled();
   });
 
-  it("resolves the standard opener and system-action keys locally", () => {
+  it("resolves opening keys and preserves a cancelled current-window request", async () => {
     const input = model.getQueryEditor().getElement();
     for (const [keystrokes, command] of [
       ["alt-enter", "recent-list:open-with"],
+      ["ctrl-enter", "recent-list:open-in-this-window"],
       ["ctrl-alt-enter", "recent-list:open-external"],
       ["alt-shift-enter", "recent-list:show-in-folder"],
     ])
       expect(lumine.keymaps.findKeyBindings({ target: input, keystrokes })[0]?.command).toBe(
         command,
       );
+
+    const switching = spyOn(lumine.project, "setState").and.resolveTo(false);
+    await model.selectItem(items[1]);
+    const finished = nextAction();
+    const event = new KeyboardEvent("keydown", {
+      key: "Enter",
+      code: "Enter",
+      ctrlKey: true,
+      bubbles: true,
+      cancelable: true,
+    });
+    Object.defineProperty(event, "target", { value: input });
+    lumine.keymaps.handleKeyboardEvent(event);
+    const result = await finished;
+    expect(result.command).toBe("recent-list:open-in-this-window");
+    expect(result.status).toBe("success");
+    expect(result.value).toEqual([false]);
+    expect(switching).toHaveBeenCalledOnceWith([betaPath, extraPath]);
+    expect(lumine.application.openWindow).not.toHaveBeenCalled();
+    expect(open).not.toHaveBeenCalled();
   });
 
   it("reports a failed system action in the native picker", async () => {
