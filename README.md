@@ -27,7 +27,7 @@ Commands available in `.recent-list`:
 
 - `recent-list:open-in-new-window`: open a new window with the selected project,
 - `recent-list:open-in-this-window`: open the selected project here, restoring the editors it was last left with,
-- `recent-list:open-with`: choose how and where to open the selected project,
+- `recent-list:open`: choose how and where to open the selected project,
 - `recent-list:add-to-project`: add the selected project's folders to the active window,
 - `recent-list:insert-paths`: paste paths into the active text editor,
 - `recent-list:open-in-dev-mode`: open a new window with the selected project in dev mode,

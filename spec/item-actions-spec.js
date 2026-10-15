@@ -38,7 +38,7 @@ describe("recent-list item actions", () => {
     expect(here.keystrokes).toEqual([process.platform === "darwin" ? "cmd-enter" : "ctrl-enter"]);
 
     expect(byCommand.get("recent-list:add-to-project").keystrokes).toEqual(["shift-enter"]);
-    expect(byCommand.get("recent-list:open-with").keystrokes).toEqual(["alt-enter"]);
+    expect(byCommand.get("recent-list:open").keystrokes).toEqual(["alt-enter"]);
     expect(byCommand.get("recent-list:remove-from-history").keystrokes).toEqual(["alt-delete"]);
     expect(byCommand.get("recent-list:open-in-new-window").keystrokes).toEqual(["enter"]);
 
@@ -183,10 +183,10 @@ describe("recent-list item actions", () => {
       expect(list.selectListHost.isVisible()).toBeTrue();
     });
 
-    it("dispatches alt-enter to Open With from the picker's mini editor", async () => {
+    it("dispatches alt-enter to Launcher from the picker's mini editor", async () => {
       await showProject();
       const choose = jasmine.createSpy("choose opener");
-      const command = lumine.commands.add("lumine-workspace", "open-with:toggle", choose);
+      const command = lumine.commands.add("lumine-workspace", "launcher:open", choose);
       const event = new KeyboardEvent("keydown", {
         key: "Enter",
         code: "Enter",

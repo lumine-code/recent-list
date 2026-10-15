@@ -95,7 +95,7 @@ describe("recent-list standard opening gestures", () => {
   }
 
   function chooser(listener = jasmine.createSpy("choose")) {
-    leases.add(lumine.commands.add("lumine-workspace", "open-with:toggle", listener));
+    leases.add(lumine.commands.add("lumine-workspace", "launcher:open", listener));
     return listener;
   }
 
@@ -103,7 +103,7 @@ describe("recent-list standard opening gestures", () => {
     const choose = chooser();
     const result = await click(items[1], { altKey: true });
     expect(result.status).toBe("success");
-    expect(result.command).toBe("recent-list:open-with");
+    expect(result.command).toBe("recent-list:open");
     expect(choose).toHaveBeenCalledTimes(1);
     expect(choose.calls.mostRecent().args[0].detail.project.paths).toEqual([betaPath, extraPath]);
     expect(choose.calls.mostRecent().args[0].target).toBe(
@@ -140,7 +140,7 @@ describe("recent-list standard opening gestures", () => {
     Object.defineProperty(event, "target", { value: model.getQueryEditor().getElement() });
     lumine.keymaps.handleKeyboardEvent(event);
     const result = await finished;
-    expect(result.command).toBe("recent-list:open-with");
+    expect(result.command).toBe("recent-list:open");
     expect(choose).toHaveBeenCalledTimes(1);
     expect(choose.calls.mostRecent().args[0].detail.project.paths).toEqual([betaPath, extraPath]);
     expect(open).not.toHaveBeenCalled();
@@ -198,7 +198,7 @@ describe("recent-list standard opening gestures", () => {
   it("resolves opening keys and preserves a cancelled current-window request", async () => {
     const input = model.getQueryEditor().getElement();
     for (const [keystrokes, command] of [
-      ["alt-enter", "recent-list:open-with"],
+      ["alt-enter", "recent-list:open"],
       [
         process.platform === "darwin" ? "cmd-enter" : "ctrl-enter",
         "recent-list:open-in-this-window",
