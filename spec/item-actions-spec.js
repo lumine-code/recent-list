@@ -35,7 +35,7 @@ describe("recent-list item actions", () => {
     expect(here.description).toBe(
       "Open the project here, restoring the editors it was last left with.",
     );
-    expect(here.keystrokes).toEqual(["ctrl-enter"]);
+    expect(here.keystrokes).toEqual([process.platform === "darwin" ? "cmd-enter" : "ctrl-enter"]);
 
     expect(byCommand.get("recent-list:add-to-project").keystrokes).toEqual(["shift-enter"]);
     expect(byCommand.get("recent-list:open-with").keystrokes).toEqual(["alt-enter"]);

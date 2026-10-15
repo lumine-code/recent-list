@@ -198,7 +198,10 @@ describe("recent-list standard opening gestures", () => {
     const input = model.getQueryEditor().getElement();
     for (const [keystrokes, command] of [
       ["alt-enter", "recent-list:open-with"],
-      ["ctrl-enter", "recent-list:open-in-this-window"],
+      [
+        process.platform === "darwin" ? "cmd-enter" : "ctrl-enter",
+        "recent-list:open-in-this-window",
+      ],
       ["ctrl-alt-enter", "recent-list:open-external"],
       ["alt-shift-enter", "recent-list:show-in-folder"],
     ])
@@ -212,7 +215,8 @@ describe("recent-list standard opening gestures", () => {
     const event = new KeyboardEvent("keydown", {
       key: "Enter",
       code: "Enter",
-      ctrlKey: true,
+      ctrlKey: process.platform !== "darwin",
+      metaKey: process.platform === "darwin",
       bubbles: true,
       cancelable: true,
     });

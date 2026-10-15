@@ -6,7 +6,7 @@
   },
   ".recent-list lumine-text-editor[mini]": {
     "alt-enter": "recent-list:open-with",
-    "ctrl-enter": "recent-list:open-in-this-window",
+    "cmdorctrl-enter": "recent-list:open-in-this-window",
     "shift-enter": "recent-list:add-to-project",
     "alt-v": "recent-list:insert-paths",
     "alt-d": "recent-list:open-in-dev-mode",
