@@ -6,8 +6,8 @@
         {
           "label": "Open Recent Project…",
           "command": "recent-list:toggle",
-          "group": "projects",
-          "order": 40
+          "group": "history",
+          "order": 10
         }
       ]
     },
@@ -18,7 +18,7 @@
           "label": "Recent List",
           "submenu": [
             {
-              "label": "Toggle",
+              "label": "Open Recent Project…",
               "command": "recent-list:toggle"
             }
           ]
