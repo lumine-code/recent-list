@@ -48,11 +48,26 @@ jobs:
   integration:
     # Run the Jasmine spec suite inside a real Lumine build; the specs exercise
     # the editor runtime (text editors, config, and service wiring).
-    name: Lumine integration specs
-    runs-on: ubuntu-latest
+    name: Lumine integration specs on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    defaults:
+      run:
+        shell: bash
     env:
       LUMINE_JASMINE_REPORTER: list
+      LUMINE_DISABLE_SHELLING_OUT_FOR_ENVIRONMENT: "true"
+      LUMINE_HOME: ${{ github.workspace }}/recent-list-spec-home
+      XDG_CONFIG_HOME: ${{ github.workspace }}/recent-list-spec-home
+      HOME: ${{ github.workspace }}/recent-list-spec-home
+      USERPROFILE: ${{ github.workspace }}/recent-list-spec-home
+      TEMP: ${{ github.workspace }}/recent-list-spec-tmp
+      TMP: ${{ github.workspace }}/recent-list-spec-tmp
+      TMPDIR: ${{ github.workspace }}/recent-list-spec-tmp
     steps:
       - uses: actions/checkout@v7
         with:
@@ -66,7 +81,10 @@ jobs:
           node-version-file: lumine/.nvmrc
           cache: npm
           cache-dependency-path: lumine/package-lock.json
+      - name: Create the private home and temporary directory
+        run: mkdir -p "$TEMP" "$LUMINE_HOME/electronUserData"
       - name: Install Linux build and headless-display dependencies
+        if: runner.os == 'Linux'
         run: |
           # A third-party repository on the runner image answering 403 must not
           # fail the job: the lists this actually needs still fetched, and the
@@ -94,4 +112,9 @@ jobs:
       - name: Run the Jasmine spec suite
         working-directory: lumine
         timeout-minutes: 20
-        run: xvfb-run --auto-servernum npm start -- --test ../recent-list/spec
+        run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            xvfb-run --auto-servernum npm start -- --test ../recent-list/spec
+          else
+            npm start -- --test ../recent-list/spec
+          fi
