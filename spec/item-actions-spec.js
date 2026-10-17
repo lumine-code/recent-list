@@ -60,11 +60,13 @@ describe("recent-list item actions", () => {
     expect(list.selectList.getAvailableActions().map(({ command }) => command)).toEqual([
       "recent-list:refresh",
       "application:clear-project-history",
+      "select-list:toggle-keep-open",
     ]);
 
     getProjects.and.returnValue([]);
     expect(list.selectList.getAvailableActions().map(({ command }) => command)).toEqual([
       "recent-list:refresh",
+      "select-list:toggle-keep-open",
     ]);
   });
 
