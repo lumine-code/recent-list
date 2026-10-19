@@ -4,10 +4,15 @@
       "label": "File",
       "submenu": [
         {
-          "label": "Open Recent Project…",
-          "command": "recent-list:toggle",
-          "group": "history",
-          "order": 10
+          "label": "Recent Projects",
+          "submenu": [
+            {
+              "label": "Browse All Recent Projects…",
+              "command": "recent-list:toggle",
+              "group": "picker",
+              "order": 10
+            }
+          ]
         }
       ]
     },
