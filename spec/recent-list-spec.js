@@ -133,12 +133,14 @@ describe("recent-list", () => {
       const item = { paths: ["alpha/", "beta/"] };
       const prepare = spyOn(lumine.tools.fuzzyMatcher, "setCandidates").and.callThrough();
       expect(view.filter([item], "al")).toEqual([item]);
+      const matcher = view.pathMatcherCache.matcher;
       expect(view.filter([item], "alpha")).toEqual([item]);
       expect(prepare.calls.count()).toBe(1);
       item.paths[0] = "gamma/";
       expect(view.filter([item], "alpha")).toEqual([]);
       expect(view.filter([item], "gamma")).toEqual([item]);
-      expect(prepare.calls.count()).toBe(2);
+      expect(prepare.calls.count()).toBe(1);
+      expect(view.pathMatcherCache.matcher).toBe(matcher);
     });
 
     const cases = [
