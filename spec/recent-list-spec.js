@@ -129,6 +129,18 @@ describe("recent-list", () => {
   });
 
   describe("filter", () => {
+    it("reuses prepared paths and refreshes them after an in-place history change", () => {
+      const item = { paths: ["alpha/", "beta/"] };
+      const prepare = spyOn(lumine.tools.fuzzyMatcher, "setCandidates").and.callThrough();
+      expect(view.filter([item], "al")).toEqual([item]);
+      expect(view.filter([item], "alpha")).toEqual([item]);
+      expect(prepare.calls.count()).toBe(1);
+      item.paths[0] = "gamma/";
+      expect(view.filter([item], "alpha")).toEqual([]);
+      expect(view.filter([item], "gamma")).toEqual([item]);
+      expect(prepare.calls.count()).toBe(2);
+    });
+
     const cases = [
       { title: "an emoji prefix", text: "😀alpha", query: "alpha", highlighted: "alpha" },
       { title: "a matched emoji", text: "test/😀alpha", query: "😀", highlighted: "😀" },

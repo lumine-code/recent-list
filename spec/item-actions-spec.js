@@ -43,7 +43,7 @@ describe("recent-list item actions", () => {
     expect(byCommand.get("recent-list:open-in-new-window").keystrokes).toEqual(["enter"]);
 
     const clear = byCommand.get("application:clear-project-history");
-    expect(clear.description).toBe("Forget the projects offered by the Reopen Project menu.");
+    expect(clear.description).toBe("Forget the projects offered by the Recent Projects menu.");
     expect(clear.context).toBe("dialog");
 
     // Every action explains itself with more than a restated title.
